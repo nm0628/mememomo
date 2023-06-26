@@ -12,17 +12,16 @@ import java.util.List;
 @RequestMapping("/api")
 public class MemoController {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoService memoService;
 
     public MemoController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoService = new MemoService(jdbcTemplate);
     }
 
     @PostMapping("/memos")
     public MemoResponseDto createMemo(@RequestBody MemoRequestDto requestDto) {
         // Controller 메서드의 이름과 Service의 메서드의 이름을 이치하는게 좋다
         // MemoResponseDto createMemo  랑 memoService.createMemo();
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.createMemo(requestDto);
     }
 
@@ -30,14 +29,12 @@ public class MemoController {
 
     @GetMapping("/memos")
     public List<MemoResponseDto> getMemos() {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.getMemos();
 
     }
 
     @PutMapping("/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.updateMemo(id, requestDto);
 
 
@@ -45,7 +42,6 @@ public class MemoController {
 
     @DeleteMapping("/memos/{id}")
     public Long deleteMemo(@PathVariable Long id) {
-        MemoService memoService = new MemoService(jdbcTemplate);
         return memoService.deleteMemo(id);
 
 
